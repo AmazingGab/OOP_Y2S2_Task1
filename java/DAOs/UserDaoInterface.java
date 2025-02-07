@@ -25,11 +25,11 @@ import java.util.List;
 
 public interface UserDaoInterface
 {
-    public Task addTask(Task task) throws DaoException;
+    public void addTask(Task task) throws DaoException;
 
     public void deleteTask(Task task) throws DaoException;
 
-    public Task completeTask(Task task) throws DaoException;
+    public void completeTask(int taskID) throws DaoException;
 
     public List<Task> getTasks() throws DaoException;
 

@@ -60,6 +60,7 @@ public class App
                     System.out.println("Please enter a task ID:");
                     int id = keyboard.nextInt();
 
+                    IUserDao.completeTask(id);
                 }
                 else if (input == 4) {
                     List<Task> tasks = IUserDao.getTasks();
@@ -82,96 +83,6 @@ public class App
                 System.out.println("1 to add new task, 2 to delete task, 3 to complete a task 4 to list all tasks, 5 list all particular tag tasks, 6 list all completed tasks and 7 to exit");
                 input = keyboard.nextInt();
             }
-//            System.out.println("\nCall findAllUsers()");
-//            List<User> users = IUserDao.findAllUsers();     // call a method in the DAO
-//
-//            if( users.isEmpty() )
-//                System.out.println("There are no Users");
-//            else {
-//                for (User user : users)
-//                    System.out.println("User: " + user.toString());
-//            }
-//
-//            // test dao with a username and password that we know are present in the database
-//            // (Use phpMyAdmin to check that the database has a row with this data)
-//            System.out.println("\nCall: findUserByUsernamePassword()");
-//            String username = "smithj";
-//            String password = "password";
-//
-//            User user = IUserDao.findUserByUsernamePassword(username, password);
-//
-//            if( user != null ) // null returned if userid and password not valid
-//                System.out.println("User found: " + user);
-//            else
-//                System.out.println("Username with that password not found");
-//
-//            // test dao - with an invalid username (i.e. row not in database)
-//            username = "madmax";
-//            password = "thunderdome";
-//
-//            user = IUserDao.findUserByUsernamePassword(username, password);
-//
-//            if(user != null)
-//                System.out.println("Username: " + username + " was found: " + user);
-//            else
-//                System.out.println("Username: " + username + ", password: " + password +" : NO match found");
-//
-//            System.out.println("\nCall findAllUsersLastNameContains()");
-//            System.out.println("LASTNAME?");
-//            String lastName = keyboard.nextLine();
-//            users = IUserDao.findAllUsersLastNameContains(lastName);     // call a method in the DAO
-//
-//            if( users.isEmpty() )
-//                System.out.println("There are no Users");
-//            else {
-//                for (User userLn : users)
-//                    System.out.println("User: " + userLn.toString());
-//            }
-//
-//            System.out.println("\nCall deleteUserById()");
-//            System.out.println("ID?");
-//            int id = keyboard.nextInt();
-//            int result = IUserDao.deleteUserById(id);
-//
-//            if (result == 1) {
-//                System.out.println("SUCCESS");
-//            }
-//            else {
-//                System.out.println("FAILED");
-//            }
-//
-//
-//            System.out.println("\nCall updateUserPassword()");
-//            System.out.println("ID?");
-//            id = keyboard.nextInt();
-//            keyboard.nextLine();
-//            System.out.println("PASSWORD?");
-//            String newPassword = keyboard.nextLine();
-//            result = IUserDao.updateUserPassword(id, newPassword);
-//
-//            if (result == 1) {
-//                System.out.println("SUCCESS");
-//            }
-//            else {
-//                System.out.println("FAILED");
-//            }
-//
-//            System.out.println("\nCall: registerUser()");
-//            System.out.println("USERNAME?");
-//            username = keyboard.nextLine();
-//            System.out.println("FIRSTNAME?");
-//            String firstName = keyboard.nextLine();
-//            System.out.println("LASTNAME?");
-//            lastName = keyboard.nextLine();
-//            System.out.println("PASSWORD?");
-//            password = keyboard.nextLine();
-//
-//            user = IUserDao.registerUser(username,lastName, firstName, password);
-//
-//            if( user != null ) // null returned if userid and password not valid
-//                System.out.println("User Added: " + user);
-//            else
-//                System.out.println("FAILED");
         }
         catch( DaoException e )
         {

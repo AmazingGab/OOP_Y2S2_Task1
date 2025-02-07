@@ -156,5 +156,32 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface {
         }
         return taskList;
     }
+
+    public void completeTask(int taskID) throws DaoException{
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = this.getConnection();
+            String updateQuery = "UPDATE taskmanager.tasks SET done = true WHERE taskid = ?";
+            preparedStatement = connection.prepareStatement(updateQuery);
+            preparedStatement.setInt(1, taskID);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("getTasksByTag() " + e.getMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    freeConnection(connection);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("getTasksByTag() " + e.getMessage());
+            }
+        }
+    }
 }
 
