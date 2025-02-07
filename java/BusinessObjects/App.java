@@ -20,10 +20,12 @@ package week3.java.BusinessObjects;
 
 import week3.java.DAOs.MySqlUserDao;
 import week3.java.DAOs.UserDaoInterface;
+import week3.java.DTOs.Task;
 import week3.java.Exceptions.DaoException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class App
@@ -60,19 +62,19 @@ public class App
 
                 }
                 else if (input == 4) {
-                    ResultSet resultSet = statement.executeQuery("select * from tasks WHERE done = false");
-                    display(resultSet);
+                    List<Task> tasks = IUserDao.getTasks();
+                    display(tasks);
                 }
                 else if (input == 5) {
                     System.out.println("Please enter a tag:");
                     tag = keyboard.nextLine();
 
-                    ResultSet resultSet = statement.executeQuery("select * from tasks where tag LIKE '" + tag + "' and done = false");
-                    display(resultSet);
+                    List<Task> tasks = IUserDao.getTasksByTag(tag);
+                    display(tasks);
                 }
                 else {
-                    ResultSet resultSet = statement.executeQuery("select * from tasks where done = true");
-                    display(resultSet);
+                    List<Task> tasks = IUserDao.getCompletedTasks();
+                    display(tasks);
                 }
 
 
@@ -177,24 +179,13 @@ public class App
         }
     }
 
-    public void display(ResultSet resultSet) {
-        try {
-            System.out.printf("\n%2s | %-20s | %-12s | %-10s | %s\n", "No", "Title", "Tag", "Due Date", "Done");
-            System.out.println("-------------------------------------------------------------");
-            while (resultSet.next()) {
-                int taskId = resultSet.getInt("taskid");
-                String title = resultSet.getString("title");
-                String tag = resultSet.getString("tag");
-                String duedate = resultSet.getString("duedate");
-                boolean done = resultSet.getBoolean("done");
-
-                System.out.printf("%2d | %-20s | [%-10s] | %s | %b\n", taskId, title, tag, duedate, done);
-            }
-            System.out.println();
-        } catch (SQLException ex) {
-            System.out.println("Failed to connect to database - check MySQL is running and that you are using the correct database details");
-            ex.printStackTrace();
+    public static void display(List<Task> tasks) {
+        System.out.printf("\n%2s | %-20s | %-12s | %-10s | %s\n", "No", "Title", "Tag", "Due Date", "Done");
+        System.out.println("-------------------------------------------------------------");
+        for (Task t : tasks) {
+            System.out.printf("%2d | %-20s | [%-10s] | %s | %b\n", t.getTaskID(), t.getTitle(), t.getTag(), t.getDueDate(), t.getDone());
         }
+        System.out.println();
     }
 }
 

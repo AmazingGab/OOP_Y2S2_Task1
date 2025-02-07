@@ -1,5 +1,7 @@
 package week3.java.DTOs;
 
+import java.util.Date;
+
 /**                                                     OOP Feb 2022
  *  Data Transfer Object (DTO)
  *
@@ -19,10 +21,10 @@ public class Task
     private int taskID;
     private String title;
     private String tag;
-    private String dueDate;
+    private Date dueDate;
     private boolean done;
 
-    public Task(int taskID, String title, String tag, String dueDate, boolean done)
+    public Task(int taskID, String title, String tag, Date dueDate, boolean done)
     {
         this.taskID = taskID;
         this.title = title;
@@ -31,7 +33,7 @@ public class Task
         this.done = done;
     }
 
-    public Task(String firstName, String title, String tag, String dueDate, boolean done)
+    public Task(String firstName, String title, String tag, Date dueDate, boolean done)
     {
         this.taskID = 0;
         this.title = title;
@@ -74,12 +76,12 @@ public class Task
         this.tag = tag;
     }
 
-    public String getDueDate()
+    public Date getDueDate()
     {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate)
+    public void setDueDate(Date dueDate)
     {
         this.dueDate = dueDate;
     }
@@ -93,8 +95,6 @@ public class Task
     {
         this.done = done;
     }
-
-    @Override
 
     @Override
     public String toString() {

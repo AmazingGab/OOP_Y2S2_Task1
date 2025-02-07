@@ -27,6 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MySqlUserDao extends MySqlDao implements UserDaoInterface {
@@ -40,8 +41,7 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface {
 
         try {
             connection = this.getConnection();
-//
-            String query = "SELECT * FROM tasks";
+            String query = "SELECT * FROM tasks WHERE done = false";
             preparedStatement = connection.prepareStatement(query);
 
             resultSet = preparedStatement.executeQuery();
@@ -49,7 +49,7 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface {
                 int id = resultSet.getInt("taskid");
                 String title = resultSet.getString("title");
                 String tag = resultSet.getString("tag");
-                String duedate = resultSet.getString("duedate");
+                Date duedate = resultSet.getDate("duedate");
                 boolean done = resultSet.getBoolean("done");
                 Task task = new Task(id, title, tag, duedate, done);
                 taskList.add(task);
@@ -74,5 +74,87 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface {
         return taskList;
     }
 
+    public List<Task> getTasksByTag(String tags) throws DaoException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Task> taskList = new ArrayList<>();
+
+        try {
+            connection = this.getConnection();
+            String query = "SELECT * FROM tasks WHERE tag LIKE ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, tags);
+
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("taskid");
+                String title = resultSet.getString("title");
+                String tag = resultSet.getString("tag");
+                Date duedate = resultSet.getDate("duedate");
+                boolean done = resultSet.getBoolean("done");
+                Task task = new Task(id, title, tag, duedate, done);
+                taskList.add(task);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("getTasksByTag() " + e.getMessage());
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    freeConnection(connection);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("getTasksByTag() " + e.getMessage());
+            }
+        }
+        return taskList;
+    }
+
+    public List<Task> getCompletedTasks() throws DaoException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Task> taskList = new ArrayList<>();
+
+        try {
+            connection = this.getConnection();
+            String query = "SELECT * FROM tasks WHERE done = true";
+            preparedStatement = connection.prepareStatement(query);
+
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("taskid");
+                String title = resultSet.getString("title");
+                String tag = resultSet.getString("tag");
+                Date duedate = resultSet.getDate("duedate");
+                boolean done = resultSet.getBoolean("done");
+                Task task = new Task(id, title, tag, duedate, done);
+                taskList.add(task);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("getCompletedTasks() " + e.getMessage());
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    freeConnection(connection);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("getCompletedTasks() " + e.getMessage());
+            }
+        }
+        return taskList;
+    }
 }
 
