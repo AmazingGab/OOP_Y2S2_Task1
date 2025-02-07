@@ -46,16 +46,16 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface {
 
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                int userId = resultSet.getInt("USER_ID");
-                String username = resultSet.getString("USERNAME");
-                String password = resultSet.getString("PASSWORD");
-                String lastname = resultSet.getString("LAST_NAME");
-                String firstname = resultSet.getString("FIRST_NAME");
-                Task u = new Task(userId, firstname, lastname, username, password);
-                usersList.add(u);
+                int id = resultSet.getInt("taskid");
+                String title = resultSet.getString("title");
+                String tag = resultSet.getString("tag");
+                String duedate = resultSet.getString("duedate");
+                boolean done = resultSet.getBoolean("done");
+                Task task = new Task(id, title, tag, duedate, done);
+                taskList.add(task);
             }
         } catch (SQLException e) {
-            throw new DaoException("findAllUseresultSet() " + e.getMessage());
+            throw new DaoException("getTasks() " + e.getMessage());
         } finally {
             try {
                 if (resultSet != null) {
@@ -68,7 +68,7 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface {
                     freeConnection(connection);
                 }
             } catch (SQLException e) {
-                throw new DaoException("findAllUsers() " + e.getMessage());
+                throw new DaoException("getTasks() " + e.getMessage());
             }
         }
         return taskList;
