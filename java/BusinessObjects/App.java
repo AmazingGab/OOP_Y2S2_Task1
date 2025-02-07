@@ -23,8 +23,10 @@ import week3.java.DAOs.UserDaoInterface;
 import week3.java.DTOs.Task;
 import week3.java.Exceptions.DaoException;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
 
@@ -41,20 +43,23 @@ public class App
             int input = keyboard.nextInt();
             while (input >= 1 && input <= 6) {
                 keyboard.nextLine();
-                String title, tag, dueDate;
+                String title, tag;
+                Date dueDate;
                 if (input == 1) {
                     System.out.println("Please enter a title:");
                     title = keyboard.nextLine();
                     System.out.println("Please enter a tag:");
                     tag = keyboard.nextLine();
                     System.out.println("Please enter a due date: YYYY-MM-DD");
-                    dueDate = keyboard.nextLine();
+                    dueDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
 
+                    IUserDao.addTask(title, tag, dueDate);
                 }
                 else if (input == 2) {
                     System.out.println("Please enter a task ID:");
                     int id = keyboard.nextInt();
 
+                    IUserDao.deleteTask(id);
                 }
                 else if (input == 3) {
                     System.out.println("Please enter a task ID:");

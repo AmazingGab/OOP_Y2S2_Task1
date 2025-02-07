@@ -1,6 +1,7 @@
 package week3.java.DTOs;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 /**                                                     OOP Feb 2022
  *  Data Transfer Object (DTO)

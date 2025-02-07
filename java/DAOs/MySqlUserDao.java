@@ -27,7 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class MySqlUserDao extends MySqlDao implements UserDaoInterface {
@@ -180,6 +180,62 @@ public class MySqlUserDao extends MySqlDao implements UserDaoInterface {
                 }
             } catch (SQLException e) {
                 throw new DaoException("getTasksByTag() " + e.getMessage());
+            }
+        }
+    }
+
+    public void deleteTask(int taskID) throws DaoException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = this.getConnection();
+            String updateQuery = "DELETE FROM tasks WHERE taskid = ?";
+            preparedStatement = connection.prepareStatement(updateQuery);
+            preparedStatement.setInt(1, taskID);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("deleteTask() " + e.getMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    freeConnection(connection);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("deleteTask() " + e.getMessage());
+            }
+        }
+    }
+
+    public void addTask(String title, String tag, Date date) throws DaoException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = this.getConnection();
+            String updateQuery = "INSERT INTO taskmanager.tasks VALUES (null, ?, ?, ?, false)";
+            preparedStatement = connection.prepareStatement(updateQuery);
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, tag);
+            preparedStatement.setDate(3, date);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("addTask() " + e.getMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    freeConnection(connection);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("addTask() " + e.getMessage());
             }
         }
     }

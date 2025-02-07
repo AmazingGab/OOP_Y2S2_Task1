@@ -21,13 +21,15 @@ package week3.java.DAOs;
 
 import week3.java.DTOs.Task;
 import week3.java.Exceptions.DaoException;
+
+import java.sql.Date;
 import java.util.List;
 
 public interface UserDaoInterface
 {
-    public void addTask(Task task) throws DaoException;
+    public void addTask(String title, String tag, Date date) throws DaoException;
 
-    public void deleteTask(Task task) throws DaoException;
+    public void deleteTask(int taskID) throws DaoException;
 
     public void completeTask(int taskID) throws DaoException;
 
